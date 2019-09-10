@@ -1,3 +1,10 @@
 De-Mining with UAVs MQP
 ===
-*Arthur Lockman, Tucker Haydon, and Greg Tighe*
+*Karl Ehlers
+Benen ElShakhs
+Eleanor Foltan
+Jessica McKenna
+Joseph Niski
+Adam Santos
+Matthew Schmitt
+Andrew VanOsten*
