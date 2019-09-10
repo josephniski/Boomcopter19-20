@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mark Mine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table.center {
+    margin-left:auto;
+    margin-right:auto;
+	margin-top:auto;
+	margin-bottom:auto;
+  }
+input.button {
+	height:100%;
+	width:100%;
+	-webkit-appearance: none;
+	font-size:300%;
+}
+input.text
+{
+  height:50%;
+  width:90%;
+  font-size:200%;
+}
+input.enable {
+	-webkit-appearance:none;
+	height:100%;
+	width:100%;
+	font-size:300%;
+}
+</style>
+</head>
+<body>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="http://maps.google.com/maps/api/js"></script>
+<script>
+var x = document.getElementById("mapholder");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    latlon = new google.maps.LatLng(lat, lon)
+    mapholder = document.getElementById('mapholder')
+    mapholder.style.height = '500px';
+    mapholder.style.width = window.innerWidth;
+
+    var myOptions = {
+    center:latlon,zoom:17,
+    mapTypeId:google.maps.MapTypeId.HYBRID,
+    mapTypeControl:false,
+    navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+    }
+
+    var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
+    var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+    document.getElementById("coords").innerHTML = latlon;
+    sendCoords(lat, lon);
+}
+function sendCoords(lat, lon)
+{
+  var url = "path/to/your/script.php"; // the script where you handle the form input.
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: {
+           'latitude': lat,
+           'longitude': lon}, // serializes the form's elements.
+           success: function(data)
+           {
+               alert(data); // show response from the php script.
+           }
+         });
+    return false; // avoid to execute the actual submit of the form.
+}
+</script>
+
+<input type="button" name="button" id="mark" value="To Here" class="enable" onClick="getLocation();">
+
+<div id="mapholder"></div>
+<div id="coords"></div>
+<img src="cam.mjpg"/>
+
+</body>
+</html>

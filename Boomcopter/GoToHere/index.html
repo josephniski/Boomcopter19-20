@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mark Mine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table.center {
+    margin-left:auto;
+    margin-right:auto;
+	margin-top:auto;
+	margin-bottom:auto;
+  }
+input.button {
+	height:100%;
+	width:100%;
+	-webkit-appearance: none;
+	font-size:300%;
+}
+input.text
+{
+  height:50%;
+  width:90%;
+  font-size:200%;
+}
+input.enable {
+	-webkit-appearance:none;
+	height:100%;
+	width:100%;
+	font-size:300%;
+}
+</style>
+</head>
+<body>
+<script src="/jquery-2.2.0.min.js"></script>
+<script>
+var x = document.getElementById("mapholder");
+var lat = 0.0;
+var long = 0.0;
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    document.getElementById("coords").innerHTML = latlon;
+}
+function sendCoords()
+{
+  var url = "/script.php"; // the script where you handle the form input.
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: {
+           'latitude': lat,
+           'longitude': lon}, // serializes the form's elements.
+           success: function(data)
+           {
+               alert(data); // show response from the php script.
+           }
+         });
+    return true; // avoid to execute the actual submit of the form.
+}
+</script>
+
+<input type="button" name="button" id="mark" value="To Here" class="enable" onClick="getLocation();">
+<input type="button" name="button1" id="confirm" value="Confirm" class="enable" onClick="sendCoords();">
+
+<div id="mapholder"></div>
+<div id="coords"></div>
+
+</body>
+</html>
